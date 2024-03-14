@@ -32,7 +32,7 @@ print(INTRO)
 
 for _ in range(MAX_GAMES):
     CPT_GAMES += 1
-    print(f'\nROUND {CPT_GAMES}')
+    print(f'ROUND {CPT_GAMES}')
     mySymbol = random.choice(SYMBOLS)
     print(f'MOI JE JOUE: {mySymbol.name}')
     rep = input('VOTRE CHOIX: ')
