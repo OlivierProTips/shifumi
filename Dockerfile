@@ -1,10 +1,9 @@
-FROM ubuntu:latest
+FROM python:3.11-alpine
 
-RUN apt-get update
-RUN apt-get -y install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install --upgrade pwntools
+RUN apk update --no-cache && apk add --no-cache socat
 
-COPY /app /app
+WORKDIR /challenge
+COPY app/main.py .
+USER nobody
 
-ENTRYPOINT [ "python", "/app/server.py" ]
+ENTRYPOINT ["socat", "-dd", "TCP-LISTEN:1337,reuseaddr,fork", "exec:python -u /challenge/main.py"]
