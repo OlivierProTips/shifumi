@@ -1,8 +1,16 @@
 import random
+import signal
+
+MAX_GAMES = 100
+TIMEOUT = 90
+
+def timeout_handler(signum, frame):
+    print("\n\nTROP LENT !!!")
+    exit(0)
 
 FLAG = "opt{Well_Done}"
 
-INTRO = """
+INTRO = f"""
 +---------+
 | SHIFUMI |
 +---------+
@@ -11,6 +19,8 @@ Le but est de gagner plusieurs fois
 PIERRE gagne sur CISEAUX
 CISEAUX gagne sur FEUILLE
 FEUILLE gagne sur PIERRE
+
+Vous avez {TIMEOUT} secondes
 """
 
 class Symbol:
@@ -24,21 +34,19 @@ SYMBOLS = [
     Symbol("CISEAUX", "PIERRE")
 ]
 
-MAX_GAMES = 100
-    
-CPT_GAMES = 0
+signal.signal(signal.SIGALRM, timeout_handler)
+signal.alarm(TIMEOUT)
 
 print(INTRO)
 
-for _ in range(MAX_GAMES):
-    CPT_GAMES += 1
-    print(f'ROUND {CPT_GAMES}')
+for i in range(MAX_GAMES):
+    print(f'ROUND {i+1}')
     mySymbol = random.choice(SYMBOLS)
     print(f'MOI JE JOUE: {mySymbol.name}')
     rep = input('VOTRE CHOIX: ')
 
-    if not rep.strip() == mySymbol.winner:
-        print('YOU LOOSE!!!')
+    if not rep.strip().casefold() == mySymbol.winner.casefold():
+        print('\nYOU LOOSE!!!')
         exit(0)
     else:
         print('YOU WIN.')

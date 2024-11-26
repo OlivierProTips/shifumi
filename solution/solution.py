@@ -1,6 +1,6 @@
 from pwn import *
 
-p = remote("localhost", 8123)
+p = remote("localhost", 1337)
 
 WINNERS = {
     "PIERRE": "FEUILLE",
